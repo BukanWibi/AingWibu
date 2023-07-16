@@ -22,8 +22,8 @@
     }
 
     create (){
-        this.background = this.add.image(200, 300, 'bg');
-        this.background.setScale(2);
+        this.background = this.add.image(400, 600, 'bg');
+        this.background.setScale(4);
         sprite = this.physics.add.sprite(200, 300, 'rocket').setScale(0.4);
         this.musuh = this.physics.add.image(10,10,'musuh').setScale(0.2);
         this.musuh1 = this.physics.add.image(10,10,'musuh').setScale(0.2);
@@ -48,12 +48,12 @@
     
     gerak(musuh,cepat){
     musuh.y += cepat;
-    if (musuh.y > 600){
+    if (musuh.y > 1200){
       this.reset(musuh);
     }
   }reset(gerak){
     gerak.y = 0;
-    var reset = Phaser.Math.Between(0,400);
+    var reset = Phaser.Math.Between(0,800);
     gerak.x = reset;
     s += 1;
   }
@@ -78,8 +78,8 @@
 
 const config = {
     type: Phaser.AUTO,
-    width: 400,
-    height: 600,
+    width: 800,
+    height: 1200,
     parent: 'phaser-example',
     physics: {
         default: 'arcade',
