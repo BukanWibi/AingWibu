@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <title>GAME MENGHINDAR</title>
+    <script src = "phaser.min.js"></script>
+    <script>
+    let bis;
+    let sprite;
+    let skor;
+    let s;
+    let bi;
+      class Example extends Phaser.Scene{
+    enemies;
+    constructor(){
+        super();
+    }
+
+    preload (){
+        this.load.image('bg', 'latar.png');
+        this.load.image('rocket', 'logo.png');
+        this.load.image('musuh','musuh.png');
+        this.load.image('gem','gemover.png');
+    }
+
+    create (){
+        this.background = this.add.image(200, 300, 'bg');
+        this.background.setScale(2);
+        sprite = this.physics.add.sprite(200, 300, 'rocket').setScale(0.4);
+        this.musuh = this.physics.add.image(10,10,'musuh').setScale(0.2);
+        this.musuh1 = this.physics.add.image(10,10,'musuh').setScale(0.2);
+        this.musuh2 = this.physics.add.image(10,10,'musuh').setScale(0.2);
+        this.game = this.add.image(200,300,'gem').setVisible(false);
+        
+        sprite.body.onCollide = true;
+        this.physics.add.collider(sprite, this.musuh);
+        this.physics.add.collider(sprite, this.musuh1);
+        this.physics.add.collider(sprite, this.musuh2);
+        sprite.setInteractive({ draggable: true });
+
+        sprite.on('drag', (pointer, dragX, dragY) => sprite.setPosition(dragX, dragY));
+        bi = 200;
+        s = 0;
+        this.physics.world.on('collide', (gameObject1, gameObject2, body1, body2) =>{
+             bi -= 1;
+        });
+        bis = this.add.text(10, 10,' ', { fontFamily: 'Arial', fontSize: 28, color: '#000000' });
+        skor = this.add.text(10, 50,' ', { fontFamily: 'Arial', fontSize: 28, color: '#000000' });
+    }
+    
+    gerak(musuh,cepat){
+    musuh.y += cepat;
+    if (musuh.y > 600){
+      this.reset(musuh);
+    }
+  }reset(gerak){
+    gerak.y = 0;
+    var reset = Phaser.Math.Between(0,400);
+    gerak.x = reset;
+    s += 1;
+  }
+  update(){
+    
+    bis.setText("nyawa: "+bi);
+    skor.setText("skor: " + s);
+    if (bi >= 0){
+      this.gerak(this.musuh,10);
+      this.gerak(this.musuh1,8);
+      this.gerak(this.musuh2,5);
+    }else {
+      this.gerak(this.musuh,0);
+      this.gerak(this.musuh1,0);
+      this.gerak(this.musuh2,0);
+      sprite.setInteractive({ draggable: false });
+      sprite.body.onCollide = false;
+      this.game.setVisible(true);
+    }
+    }
+  }
+
+const config = {
+    type: Phaser.AUTO,
+    width: 400,
+    height: 600,
+    parent: 'phaser-example',
+    physics: {
+        default: 'arcade',
+        arcade: { debug: false },
+        matter: {
+            gravity: {
+                x: 0,
+                y: 0
+            }
+        }
+    },
+    scene: Example
+};
+
+const game = new Phaser.Game(config);
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
